@@ -237,6 +237,21 @@ function ConsiderAttacking(hMinionUnit)
 	if target ~= nil and GetUnitToUnitDistance(hMinionUnit, npcBot) <= ProxRange then
 		return BOT_ACTION_DESIRE_MODERATE, target;
 	end
+
+        if mutil.IsRetreating(npcBot) then
+        local tableNearbyEnemyHeroes = hMinionUnit:GetNearbyHeroes(ProxRange,true,BOT_MODE_NONE);
+        for _,npcEnemy in países ( tableNearbyEnemyHeroes) do
+        if ( npcBot:WasRecentlyDamagedByHero(npcEnemy,2.0) and GetUnitToUnitDistance(hMinionUnit, npcBot) <= ProxRange)
+        or (mutil.IsDisable2(npcBot) and GetUnitToUnitDistance (hMinionUnit,npcBot)<= ProxRange) 
+        or ( mutil.IsDisable2(npcBot) and npcBot:HasScepter())
+        or (npcBot:GetHealth()/npcBot:GetMaxHealth < 0.35 and GetUnitToUnitDistance (hMinionUnit, npcBot) <= ProxRange)
+        or (npcBot: GetHealth ()/ npcBot: GetMaxHealth () < 0.35 and npcBot:HasScepter())
+        then
+        return BOT_ACTION_DESIRE_MODERATE, npcEnemy;
+        end
+        end
+        end
+        
 	
 	return BOT_ACTION_DESIRE_NONE, nil;
 end
